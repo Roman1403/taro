@@ -139,14 +139,15 @@ const App: React.FC = () => {
                   <DonationButton />
                 </div>
 
-              <div className="flex justify-center w-full pt-8">
+              <div className="flex flex-col items-center w-full pt-8 gap-4">
   <button 
     onClick={reset}
-    className="px-8 py-3 border-2 border-[#d4af37] rounded-full text-[#d4af37] uppercase tracking-[0.3em] text-sm hover:bg-[#d4af37] hover:text-black transition-all duration-500 font-medium"
+    className="px-10 py-4 border-2 border-[#d4af37] rounded-full text-[#d4af37] uppercase tracking-[0.3em] text-sm hover:bg-[#d4af37] hover:text-black transition-all duration-500 font-semibold shadow-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.3)]"
   >
     Новая консультация
   </button>
 </div>
+
 
               </div>
             ) : null}
