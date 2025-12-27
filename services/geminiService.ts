@@ -42,8 +42,9 @@ export const getTarotInterpretation = async (question: string, cards: TarotCard[
 `;
 
   try {
+    // Используем самую новую модель Gemini 3 Flash Preview
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-pro-latest",
+      model: "gemini-3-flash-preview",
     });
 
     const result = await model.generateContent(prompt);
@@ -56,12 +57,12 @@ export const getTarotInterpretation = async (question: string, cards: TarotCard[
 
     return text;
   } catch (error) {
-    console.error("Gemini interpretation error:", error);
+    console.error("Gemini 3 Flash error:", error);
     
-    // Запасной вариант с другой моделью
+    // Fallback на Gemini 2.0 Flash если 3.0 недоступен
     try {
       const fallbackModel = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash-latest",
+        model: "gemini-2.0-flash-exp",
       });
       
       const result = await fallbackModel.generateContent(prompt);
