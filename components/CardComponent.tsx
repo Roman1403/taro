@@ -5,13 +5,11 @@ const DonationButton: React.FC = () => {
   const [copiedCard, setCopiedCard] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   
-  // ========== ВАШИ ДАННЫЕ ==========
-  const cardNumber = "2204 3101 5451 2233"; // С пробелами для удобства
-  const cardNumberRaw = "2204310154512233"; // Без пробелов для копирования
+  const cardNumber = "2204 3101 5451 2233";
+  const cardNumberRaw = "2204310154512233";
   const cardHolder = "Sharov Roman";
-  const sbpPhone = "+7 922 294 66 69"; // С пробелами для удобства
-  const sbpPhoneRaw = "+79222946669"; // Без пробелов для копирования
-  // =================================
+  const sbpPhone = "+7 922 294 66 69";
+  const sbpPhoneRaw = "+79222946669";
 
   const copyCard = async () => {
     try {
@@ -59,7 +57,6 @@ const DonationButton: React.FC = () => {
               Если это предсказание нашло отклик в вашей душе
             </p>
 
-            {/* СБП - приоритетный способ */}
             <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-4 mb-4">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-lg">⚡</span>
@@ -81,14 +78,12 @@ const DonationButton: React.FC = () => {
               </button>
             </div>
 
-            {/* Разделитель */}
             <div className="flex items-center gap-3 my-4">
               <div className="flex-1 h-[1px] bg-[#d4af37]/20"></div>
               <span className="text-xs text-[#d4af37]/40 uppercase tracking-widest">или</span>
               <div className="flex-1 h-[1px] bg-[#d4af37]/20"></div>
             </div>
 
-            {/* Номер карты */}
             <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-4 mb-6">
               <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider mb-2">
                 Номер карты
