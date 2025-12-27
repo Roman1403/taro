@@ -159,9 +159,12 @@ const App: React.FC = () => {
 )}
 </main>
 
-<footer className="w-full pt-10 pb-4 text-center">
-  <p className="text-[8px] uppercase tracking-[0.5em] opacity-20">Древняя мудрость • Современное руководство</p>
-</footer>
-
+      <footer className="w-full pt-10 pb-4 text-center">
+        <p className="text-[8px] uppercase tracking-[0.5em] opacity-20">Древняя мудрость • Современное руководство</p>
+      </footer>
+    </div>  {/* ← Закрываем корневой div className="min-h-screen..." */}
+  );
+};
 
 export default App;
+
