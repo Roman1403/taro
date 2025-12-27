@@ -8,14 +8,13 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({
-model: "gemini-3-flash",  // ← Только эта модель!
+
 // Настройки генерации
 const generationConfig = {
   temperature: 0.8,
   topP: 0.95,
   topK: 40,
-  maxOutputTokens: 2048, // ← Достаточно для длинных ответов
+  maxOutputTokens: 2048,
 };
 
 export const getTarotInterpretation = async (question: string, cards: TarotCard[]): Promise<string> => {
@@ -135,8 +134,8 @@ ${cardsText}
 
   try {
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-3-flash",
-      generationConfig, // ← Добавили настройки генерации
+      model: "gemini-1.5-flash",
+      generationConfig,
     });
 
     const result = await model.generateContent(prompt);
@@ -148,13 +147,18 @@ ${cardsText}
     }
 
     return text;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gemini error:", error);
     
-    // Fallback тоже использует gemini-3-flash-preview
+    // Проверка на rate limit
+    if (error?.message?.includes('429') || error?.message?.includes('quota')) {
+      return "⏳ Достигнут дневной лимит запросов. Попробуйте завтра или подключите биллинг в Google AI Studio.";
+    }
+    
+    // Попытка fallback
     try {
       const fallbackModel = genAI.getGenerativeModel({ 
-        model: "gemini-3-flash-preview", // ← Исправлено!
+        model: "gemini-1.5-flash",
         generationConfig,
       });
       
@@ -163,7 +167,7 @@ ${cardsText}
       return response.text() || "Оракул хранит молчание.";
     } catch (fallbackError) {
       console.error("Fallback error:", fallbackError);
-      return "Необходима тишь такой рефлексии. Звёзды скрыты, но карты остаются символами вашего пути.";
+      return "Звёзды временно скрыты. Попробуйте через минуту.";
     }
   }
 };
