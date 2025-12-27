@@ -134,6 +134,15 @@ const App: React.FC = () => {
     ) : (
       <div className="space-y-6">
         <h3 className="serif text-3xl italic mb-6">Толкование</h3>
+           {/* Interpretation Section */}
+    {isInterpreting ? (
+      <div className="flex flex-col items-center py-10">
+        <div className="w-8 h-8 border-t border-r border-[#d4af37] rounded-full animate-spin mb-4"></div>
+        <p className="serif italic text-lg opacity-60">Оракул размышляет...</p>
+      </div>
+    ) : reading.interpretation ? (
+      <div className="space-y-6">
+        <h3 className="serif text-3xl italic mb-6">Толкование</h3>
         <div className="text-[#d4af37]/90 leading-relaxed text-base max-w-2xl mx-auto text-left space-y-4">
           {reading.interpretation.split('\n').map((line, i) => {
             if (line.startsWith('**') && line.endsWith('**')) {
@@ -154,6 +163,8 @@ const App: React.FC = () => {
           Новая консультация
         </button>
       </div>
+    ) : null}
+
     )}
   </div>
 )}
