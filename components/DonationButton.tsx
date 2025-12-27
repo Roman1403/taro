@@ -1,28 +1,125 @@
-
 import React, { useState } from 'react';
-import { BANK_CARD_NUMBER } from '../constants';
 
 const DonationButton: React.FC = () => {
-  const [copied, setCopied] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [copiedCard, setCopiedCard] = useState(false);
+  const [copiedPhone, setCopiedPhone] = useState(false);
+  
+  // ========== ВАШИ ДАННЫЕ ==========
+  const cardNumber = "2204 3101 5451 2233"; // С пробелами для читаемости
+  const cardNumberRaw = "2204310154512233"; // Без пробелов для копирования
+  const cardHolder = "Sharov Roman";
+  const sbpPhone = "+7 922 294 66 69"; // С пробелами
+  const sbpPhoneRaw = "+79222946669"; // Без пробелов для копирования
+  // =================================
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(BANK_CARD_NUMBER);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+  const copyCard = async () => {
+    try {
+      await navigator.clipboard.writeText(cardNumberRaw);
+      setCopiedCard(true);
+      setTimeout(() => setCopiedCard(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy card:', err);
+    }
+  };
+
+  const copyPhone = async () => {
+    try {
+      await navigator.clipboard.writeText(sbpPhoneRaw);
+      setCopiedPhone(true);
+      setTimeout(() => setCopiedPhone(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy phone:', err);
+    }
   };
 
   return (
-    <div className="flex flex-col items-center gap-2 mt-12 mb-8 animate-fade-in">
+    <>
       <button
-        onClick={handleCopy}
-        className="px-8 py-3 bg-[#d4af37] text-black font-semibold rounded-full tracking-widest text-sm uppercase gold-glow transition-all duration-300 hover:scale-105 active:scale-95"
+        onClick={() => setShowModal(true)}
+        className="px-8 py-3 bg-[#d4af37] text-black rounded-full uppercase tracking-[0.3em] text-sm font-medium hover:bg-[#c49d2f] transition-all duration-500 shadow-lg hover:shadow-xl"
       >
-        {copied ? 'Скопировано' : 'Поблагодарить автора'}
+        Поблагодарить автора
       </button>
-      <p className="text-xs opacity-50 font-light italic">
-        {copied ? 'Спасибо. Энергия возвращается.' : 'Если это предсказание нашло отклик в вашей душе'}
-      </p>
-    </div>
+
+      {showModal && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 px-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div 
+            className="bg-[#1a1a1a] border border-[#d4af37]/30 rounded-2xl p-8 max-w-md w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="serif text-2xl text-[#d4af37] mb-4 text-center">
+              Поддержать проект
+            </h3>
+            
+            <p className="text-[#d4af37]/70 text-sm mb-6 text-center leading-relaxed">
+              Если это предсказание нашло отклик в вашей душе
+            </p>
+
+            {/* СБП - приоритетный способ */}
+            <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-4 mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">⚡</span>
+                <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider">
+                  СБП (Быстрый перевод)
+                </p>
+              </div>
+              <p className="text-[#d4af37] text-lg font-mono tracking-wider mb-3">
+                {sbpPhone}
+              </p>
+              <p className="text-xs text-[#d4af37]/60 mb-3">
+                Откройте приложение банка → СБП → По номеру телефона
+              </p>
+              <button
+                onClick={copyPhone}
+                className="w-full py-2.5 bg-[#d4af37] text-black rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-[#c49d2f] transition-all duration-300 shadow-lg"
+              >
+                {copiedPhone ? '✓ Телефон скопирован!' : '📱 Копировать телефон'}
+              </button>
+            </div>
+
+            {/* Разделитель */}
+            <div className="flex items-center gap-3 my-4">
+              <div className="flex-1 h-[1px] bg-[#d4af37]/20"></div>
+              <span className="text-xs text-[#d4af37]/40 uppercase tracking-widest">или</span>
+              <div className="flex-1 h-[1px] bg-[#d4af37]/20"></div>
+            </div>
+
+            {/* Номер карты */}
+            <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-4 mb-6">
+              <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider mb-2">
+                Номер карты
+              </p>
+              <p className="text-[#d4af37] text-base font-mono tracking-wider mb-2">
+                {cardNumber}
+              </p>
+              <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider mb-1">
+                Владелец
+              </p>
+              <p className="text-[#d4af37]/80 text-sm mb-3">
+                {cardHolder}
+              </p>
+              <button
+                onClick={copyCard}
+                className="w-full py-2.5 border-2 border-[#d4af37] rounded-full text-[#d4af37] text-xs uppercase tracking-wider font-semibold hover:bg-[#d4af37] hover:text-black transition-all duration-300"
+              >
+                {copiedCard ? '✓ Номер карты скопирован!' : '💳 Копировать номер карты'}
+              </button>
+            </div>
+
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full text-[#d4af37]/40 text-xs uppercase tracking-widest hover:text-[#d4af37]/70 transition-colors"
+            >
+              Закрыть
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
