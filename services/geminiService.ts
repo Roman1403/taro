@@ -8,10 +8,15 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-
-const model = genAI.getGenerativeModel({ 
-  model: "gemini-3-flash-preview",  // ← Только эта модель!
-});
+const model = genAI.getGenerativeModel({
+model: "gemini-3-flash-preview",  // ← Только эта модель!
+// Настройки генерации
+const generationConfig = {
+  temperature: 0.8,
+  topP: 0.95,
+  topK: 40,
+  maxOutputTokens: 2048, // ← Достаточно для длинных ответов
+};
 
 export const getTarotInterpretation = async (question: string, cards: TarotCard[]): Promise<string> => {
   let prompt = '';
@@ -131,6 +136,7 @@ ${cardsText}
   try {
     const model = genAI.getGenerativeModel({ 
       model: "gemini-3-flash-preview",
+      generationConfig, // ← Добавили настройки генерации
     });
 
     const result = await model.generateContent(prompt);
@@ -145,9 +151,11 @@ ${cardsText}
   } catch (error) {
     console.error("Gemini error:", error);
     
+    // Fallback тоже использует gemini-3-flash-preview
     try {
       const fallbackModel = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview", // ← Исправлено!
+        generationConfig,
       });
       
       const result = await fallbackModel.generateContent(prompt);
