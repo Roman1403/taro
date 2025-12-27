@@ -5,13 +5,11 @@ const DonationButton: React.FC = () => {
   const [copiedCard, setCopiedCard] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   
-  // ========== ВАШИ ДАННЫЕ ==========
-  const cardNumber = "2204 3101 5451 2233"; // С пробелами для читаемости
-  const cardNumberRaw = "2204310154512233"; // Без пробелов для копирования
+  // ========== ВАШИ ДАННЫЕ (скрыты от показа) ==========
+  const cardNumberRaw = "2204310154512233";
   const cardHolder = "Sharov Roman";
-  const sbpPhone = "+7 922 294 66 69"; // С пробелами
-  const sbpPhoneRaw = "+79222946669"; // Без пробелов для копирования
-  // =================================
+  const sbpPhoneRaw = "+79222946669";
+  // ====================================================
 
   const copyCard = async () => {
     try {
@@ -60,24 +58,21 @@ const DonationButton: React.FC = () => {
             </p>
 
             {/* СБП - приоритетный способ */}
-            <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-4 mb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">⚡</span>
-                <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider">
+            <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-5 mb-4">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xl">⚡</span>
+                <p className="text-sm text-[#d4af37] uppercase tracking-wider font-semibold">
                   СБП (Быстрый перевод)
                 </p>
               </div>
-              <p className="text-[#d4af37] text-lg font-mono tracking-wider mb-3">
-                {sbpPhone}
-              </p>
-              <p className="text-xs text-[#d4af37]/60 mb-3">
+              <p className="text-xs text-[#d4af37]/60 mb-4 leading-relaxed">
                 Откройте приложение банка → СБП → По номеру телефона
               </p>
               <button
                 onClick={copyPhone}
-                className="w-full py-2.5 bg-[#d4af37] text-black rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-[#c49d2f] transition-all duration-300 shadow-lg"
+                className="w-full py-3 bg-[#d4af37] text-black rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-[#c49d2f] transition-all duration-300 shadow-lg"
               >
-                {copiedPhone ? '✓ Телефон скопирован!' : '📱 Копировать телефон'}
+                {copiedPhone ? '✓ Телефон скопирован!' : '📱 Копировать номер телефона'}
               </button>
             </div>
 
@@ -89,22 +84,22 @@ const DonationButton: React.FC = () => {
             </div>
 
             {/* Номер карты */}
-            <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-4 mb-6">
-              <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider mb-2">
-                Номер карты
+            <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-5 mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xl">💳</span>
+                <p className="text-sm text-[#d4af37] uppercase tracking-wider font-semibold">
+                  Банковская карта
+                </p>
+              </div>
+              <p className="text-xs text-[#d4af37]/60 mb-2">
+                Владелец: {cardHolder}
               </p>
-              <p className="text-[#d4af37] text-base font-mono tracking-wider mb-2">
-                {cardNumber}
-              </p>
-              <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider mb-1">
-                Владелец
-              </p>
-              <p className="text-[#d4af37]/80 text-sm mb-3">
-                {cardHolder}
+              <p className="text-xs text-[#d4af37]/50 mb-4 leading-relaxed">
+                Перевод на карту любого банка России
               </p>
               <button
                 onClick={copyCard}
-                className="w-full py-2.5 border-2 border-[#d4af37] rounded-full text-[#d4af37] text-xs uppercase tracking-wider font-semibold hover:bg-[#d4af37] hover:text-black transition-all duration-300"
+                className="w-full py-3 border-2 border-[#d4af37] rounded-full text-[#d4af37] text-xs uppercase tracking-wider font-semibold hover:bg-[#d4af37] hover:text-black transition-all duration-300"
               >
                 {copiedCard ? '✓ Номер карты скопирован!' : '💳 Копировать номер карты'}
               </button>
