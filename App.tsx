@@ -139,12 +139,15 @@ const App: React.FC = () => {
                   <DonationButton />
                 </div>
 
-                <button 
-                  onClick={reset}
-                  className="text-[10px] uppercase tracking-[0.4em] opacity-30 hover:opacity-100 transition-opacity pb-10"
-                >
-                  Новая консультация
-                </button>
+              <div className="flex justify-center w-full pt-8">
+  <button 
+    onClick={reset}
+    className="px-8 py-3 border-2 border-[#d4af37] rounded-full text-[#d4af37] uppercase tracking-[0.3em] text-sm hover:bg-[#d4af37] hover:text-black transition-all duration-500 font-medium"
+  >
+    Новая консультация
+  </button>
+</div>
+
               </div>
             ) : null}
           </div>
