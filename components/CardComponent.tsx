@@ -1,63 +1,81 @@
+import React, { useState } from 'react';
 
-import React, { useState, useEffect } from 'react';
-import { TarotCard } from '../types';
+const DonationButton: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+  
+  const cardNumber = "2200 7007 1234 5678"; // Замените на ваш номер карты
+  const cardHolder = "IVAN IVANOV"; // Замените на ваше имя
 
-interface CardComponentProps {
-  card: TarotCard;
-  index: number;
-  revealed: boolean;
-  onReveal?: () => void;
-}
-
-const CardComponent: React.FC<CardComponentProps> = ({ card, index, revealed, onReveal }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  useEffect(() => {
-    if (revealed) {
-      const timer = setTimeout(() => setIsFlipped(true), index * 400);
-      return () => clearTimeout(timer);
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(cardNumber.replace(/\s/g, ''));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
     }
-  }, [revealed, index]);
+  };
 
   return (
-    <div 
-      className="relative w-full aspect-[2/3] perspective-1000 cursor-pointer mb-6 md:mb-0"
-      onClick={() => !isFlipped && onReveal?.()}
-    >
-      <div 
-        className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+    <>
+      <button
+        onClick={() => setShowModal(true)}
+        className="px-8 py-3 bg-[#d4af37] text-black rounded-full uppercase tracking-[0.3em] text-sm font-medium hover:bg-[#c49d2f] transition-all duration-500 shadow-lg hover:shadow-xl"
       >
-        {/* Card Back */}
-        <div className="absolute inset-0 w-full h-full backface-hidden bg-[#0f0f0f] border border-[#d4af37]/40 rounded-lg flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 opacity-10 flex items-center justify-center">
-             <svg width="80%" height="80%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="45" stroke="#d4af37" strokeWidth="0.5" />
-                <path d="M50 5 L50 95 M5 50 L95 50" stroke="#d4af37" strokeWidth="0.5" />
-                <path d="M15 15 L85 85 M15 85 L85 15" stroke="#d4af37" strokeWidth="0.5" />
-             </svg>
-          </div>
-          <div className="serif text-2xl opacity-40 font-light tracking-widest text-[#d4af37]">ОРАКУЛ</div>
-        </div>
+        Поблагодарить автора
+      </button>
 
-        {/* Card Front */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-[#0a0a0a] border border-[#d4af37] rounded-lg p-4 flex flex-col items-center justify-between text-center shadow-2xl">
-          <div className="w-full h-2/3 flex items-center justify-center opacity-80">
-             {/* Abstract Minimalist Illustration Placeholder */}
-             <svg viewBox="0 0 100 120" className="w-4/5 h-auto text-[#d4af37]">
-                <rect x="10" y="10" width="80" height="100" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                <circle cx="50" cy="60" r="30" fill="none" stroke="currentColor" strokeWidth="0.3" strokeDasharray="2 2" />
-                <path d="M20 110 L80 110 M50 20 L50 40" stroke="currentColor" strokeWidth="1" />
-                <text x="50" y="70" textAnchor="middle" fontSize="4" fill="currentColor" className="opacity-40">{card.description}</text>
-             </svg>
-          </div>
-          <div className="flex flex-col gap-1 w-full mt-2">
-            <h3 className="text-lg md:text-xl font-medium tracking-wide border-b border-[#d4af37]/20 pb-1">{card.name}</h3>
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] opacity-60 mt-2">{card.meaning}</p>
+      {showModal && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 px-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div 
+            className="bg-[#1a1a1a] border border-[#d4af37]/30 rounded-2xl p-8 max-w-md w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="serif text-2xl text-[#d4af37] mb-6 text-center">
+              Поддержать проект
+            </h3>
+            
+            <p className="text-[#d4af37]/70 text-sm mb-6 text-center leading-relaxed">
+              Если это предсказание нашло отклик в вашей душе
+            </p>
+
+            <div className="bg-[#0a0a0a] border border-[#d4af37]/20 rounded-lg p-4 mb-4">
+              <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider mb-2">
+                Номер карты
+              </p>
+              <p className="text-[#d4af37] text-lg font-mono tracking-wider mb-3">
+                {cardNumber}
+              </p>
+              <p className="text-xs text-[#d4af37]/50 uppercase tracking-wider mb-1">
+                Владелец
+              </p>
+              <p className="text-[#d4af37]/80 text-sm">
+                {cardHolder}
+              </p>
+            </div>
+
+            <button
+              onClick={copyToClipboard}
+              className="w-full py-3 border-2 border-[#d4af37] rounded-full text-[#d4af37] uppercase tracking-[0.2em] text-sm hover:bg-[#d4af37] hover:text-black transition-all duration-300 mb-4"
+            >
+              {copied ? '✓ Скопировано' : 'Скопировать номер'}
+            </button>
+
+            <button
+              onClick={() => setShowModal(false)}
+              className="w-full text-[#d4af37]/40 text-xs uppercase tracking-widest hover:text-[#d4af37]/70 transition-colors"
+            >
+              Закрыть
+            </button>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
-export default CardComponent;
+export default DonationButton;
