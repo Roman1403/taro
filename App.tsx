@@ -100,74 +100,68 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {(step === 'reading' || step === 'interpretation') && reading && (
-          <div className="w-full animate-in fade-in duration-1000">
-            {/* Question Recap */}
-            <div className="text-center mb-10 px-4">
-              <p className="text-[10px] uppercase tracking-[0.3em] opacity-40 mb-2">Путь вопроса</p>
-              <p className="serif text-lg italic text-[#d4af37]/80 leading-relaxed">«{reading.question}»</p>
-            </div>
-
-            {/* Cards Display */}
-           {/* Cards Display */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {reading.cards.map((card, idx) => (
-                <div key={card.id} className="flex flex-col items-center space-y-4">
-                  <div className="relative w-full aspect-[2/3] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4af37]/30 rounded-lg flex items-center justify-center gold-glow-hover transition-all duration-300">
-                    <span className="text-6xl">{card.icon}</span>
-                  </div>
-                  <div className="text-center">
-                    <h4 className="serif text-xl text-[#d4af37] mb-1">{card.name}</h4>
-                    <p className="text-xs uppercase tracking-widest opacity-40">
-                      {idx === 0 ? 'ЗАВЕРШЕНИЕ' : idx === 1 ? 'СВЯЩЕННЫЕ ТРАДИЦИИ' : 'СТРУКТУРА, ВЛАСТЬ'}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-           {/* Interpretation Section */}
-{isInterpreting ? (
-  <div className="flex flex-col items-center py-10">
-    <div className="w-8 h-8 border-t border-r border-[#d4af37] rounded-full animate-spin mb-4"></div>
-    <p className="serif italic text-lg opacity-60">Оракул размышляет...</p>
-  </div>
-) : (
-  <div className="space-y-6">
-    <h3 className="serif text-3xl italic mb-6">Толкование</h3>
-    <div className="text-[#d4af37]/90 leading-relaxed text-base max-w-2xl mx-auto text-left space-y-4">
-      {reading.interpretation.split('\n').map((line, i) => {
-        if (line.startsWith('**') && line.endsWith('**')) {
-          return <h4 key={i} className="serif text-xl text-[#d4af37] mt-6 mb-2">{line.replace(/\*\*/g, '')}</h4>;
-        }
-        return line.trim() ? <p key={i} className="leading-relaxed">{line}</p> : null;
-      })}
-    </div>
-    
-    <div className="pt-10">
-      <DonationButton />
+      {(step === 'reading' || step === 'interpretation') && reading && (
+  <div className="w-full animate-in fade-in duration-1000">
+    {/* Question Recap */}
+    <div className="text-center mb-10 px-4">
+      <p className="text-[10px] uppercase tracking-[0.3em] opacity-40 mb-2">Путь вопроса</p>
+      <p className="serif text-lg italic text-[#d4af37]/80 leading-relaxed">«{reading.question}»</p>
     </div>
 
-    <button 
-      onClick={reset}
-      className="text-[10px] uppercase tracking-[0.4em] opacity-30 hover:opacity-100 transition-opacity pb-10"
-    >
-      Новая консультация
-    </button>
+    {/* Cards Display */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      {reading.cards.map((card, idx) => (
+        <div key={card.id} className="flex flex-col items-center space-y-4">
+          <div className="relative w-full aspect-[2/3] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4af37]/30 rounded-lg flex items-center justify-center gold-glow-hover transition-all duration-300">
+            <span className="text-6xl">{card.icon}</span>
+          </div>
+          <div className="text-center">
+            <h4 className="serif text-xl text-[#d4af37] mb-1">{card.name}</h4>
+            <p className="text-xs uppercase tracking-widest opacity-40">
+              {idx === 0 ? 'ЗАВЕРШЕНИЕ' : idx === 1 ? 'СВЯЩЕННЫЕ ТРАДИЦИИ' : 'СТРУКТУРА, ВЛАСТЬ'}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Interpretation Section */}
+    {isInterpreting ? (
+      <div className="flex flex-col items-center py-10">
+        <div className="w-8 h-8 border-t border-r border-[#d4af37] rounded-full animate-spin mb-4"></div>
+        <p className="serif italic text-lg opacity-60">Оракул размышляет...</p>
+      </div>
+    ) : (
+      <div className="space-y-6">
+        <h3 className="serif text-3xl italic mb-6">Толкование</h3>
+        <div className="text-[#d4af37]/90 leading-relaxed text-base max-w-2xl mx-auto text-left space-y-4">
+          {reading.interpretation.split('\n').map((line, i) => {
+            if (line.startsWith('**') && line.endsWith('**')) {
+              return <h4 key={i} className="serif text-xl text-[#d4af37] mt-6 mb-2">{line.replace(/\*\*/g, '')}</h4>;
+            }
+            return line.trim() ? <p key={i} className="leading-relaxed">{line}</p> : null;
+          })}
+        </div>
+        
+        <div className="pt-10">
+          <DonationButton />
+        </div>
+
+        <button 
+          onClick={reset}
+          className="text-[10px] uppercase tracking-[0.4em] opacity-30 hover:opacity-100 transition-opacity pb-10"
+        >
+          Новая консультация
+        </button>
+      </div>
+    )}
   </div>
 )}
+</main>
 
-              </div>
-            )}
-          </div>
-        )}
-      </main>
+<footer className="w-full pt-10 pb-4 text-center">
+  <p className="text-[8px] uppercase tracking-[0.5em] opacity-20">Древняя мудрость • Современное руководство</p>
+</footer>
 
-      <footer className="w-full pt-10 pb-4 text-center">
-        <p className="text-[8px] uppercase tracking-[0.5em] opacity-20">Древняя мудрость • Современное руководство</p>
-      </footer>
-    </div>
-  );
-};
 
 export default App;
