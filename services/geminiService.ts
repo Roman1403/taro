@@ -17,12 +17,12 @@ const generationConfig = {
   maxOutputTokens: 2048,
 };
 
-// Список моделей в порядке приоритета
+// Список моделей в порядке приоритета (точные названия из API)
 const MODELS = [
-  "gemini-1.5-flash",      // 1500 RPD - основная
-  "gemini-2.5-flash-lite", // 20 RPD - запасная
-  "gemini-2.5-flash",      // 20 RPD - запасная
-  "gemma-3-1b",            // 14.4K RPD - последний резерв
+  "models/gemini-1.5-flash",      // Полное название с префиксом
+  "models/gemini-2.5-flash-lite",
+  "models/gemini-2.5-flash", 
+  "models/gemma-3-1b",
 ];
 
 export const getTarotInterpretation = async (question: string, cards: TarotCard[]): Promise<string> => {
@@ -159,35 +159,32 @@ ${cardsText}
         throw new Error("Пустой ответ от API");
       }
 
-      // Если не первая модель, добавляем уведомление
       if (i > 0) {
         console.log(`✅ Успешно использована резервная модель: ${modelName}`);
       }
 
       return text;
     } catch (error: any) {
-      console.error(`Ошибка модели ${MODELS[i]}:`, error);
+      console.error(`Ошибка модели ${MODELS[i]}:`, error?.message || error);
       
-      // Если это последняя модель или не ошибка лимита - выходим
       const isRateLimitError = error?.message?.includes('429') || 
                                error?.message?.includes('quota') ||
                                error?.message?.includes('RESOURCE_EXHAUSTED');
       
       if (i === MODELS.length - 1) {
-        // Все модели исчерпаны
         if (isRateLimitError) {
-          return "⏳ Все доступные модели достигли дневного лимита. Попробуйте через несколько часов или подключите биллинг в Google AI Studio для увеличения лимитов.";
+          return "⏳ Все доступные модели достигли дневного лимита. Попробуйте завтра или подключите биллинг в Google AI Studio.";
         }
         return "Звёзды временно скрыты. Попробуйте через минуту.";
       }
       
-      // Если не ошибка лимита - не пробуем другие модели
       if (!isRateLimitError) {
-        return "Произошла ошибка при обращении к оракулу. Попробуйте позже.";
+        // Пробуем следующую модель даже при 404
+        console.log(`⚠️ Переключение на следующую модель...`);
+        continue;
       }
       
-      // Переходим к следующей модели
-      console.log(`⚠️ Переключение на следующую модель...`);
+      console.log(`⚠️ Переключение на следующую модель из-за лимита...`);
     }
   }
 
