@@ -13,3 +13,5 @@ export interface Reading {
   cards: TarotCard[];
   interpretation?: string;
 }
+export type SpreadType = 'one' | 'three' | 'celtic';
+export type AppState = 'input' | 'spread-select' | 'drawing' | 'reading' | 'interpretation';
