@@ -2,7 +2,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { TarotCard } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+const ai = new GoogleGenerativeAI({ apikey: "AIzaSyAAO3XmnSm2zRr0h4lXx_Q5dnxYrc3vHx4" });
 
 export const getTarotInterpretation = async (question: string, cards: TarotCard[]): Promise<string> => {
   const cardList = cards.map(c => `${c.name} (${c.meaning})`).join(", ");
