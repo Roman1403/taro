@@ -109,16 +109,32 @@ const App: React.FC = () => {
             </div>
 
             {/* Cards Display */}
+           {/* Cards Display */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {reading.cards.map((card, idx) => (
-                <CardComponent key={card.id} card={card} index={idx} revealed={isRevealing} />
+                <div key={card.id} className="flex flex-col items-center space-y-4">
+                  <div className="relative w-full aspect-[2/3] bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] border border-[#d4af37]/30 rounded-lg flex items-center justify-center gold-glow-hover transition-all duration-300">
+                    <span className="text-6xl">{card.icon}</span>
+                  </div>
+                  <div className="text-center">
+                    <h4 className="serif text-xl text-[#d4af37] mb-1">{card.name}</h4>
+                    <p className="text-xs uppercase tracking-widest opacity-40">
+                      {idx === 0 ? 'ЗАВЕРШЕНИЕ' : idx === 1 ? 'СВЯЩЕННЫЕ ТРАДИЦИИ' : 'СТРУКТУРА, ВЛАСТЬ'}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
 
             {/* Interpretation Section */}
-            {(isInterpreting || reading.interpretation) && (
-              <div className="w-full text-center animate-in fade-in slide-in-from-bottom-8 duration-1000 mt-8">
-                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent mb-10"></div>
+           <div className="text-[#d4af37]/90 leading-relaxed text-base max-w-2xl mx-auto text-left space-y-4">
+                      {reading.interpretation.split('\n').map((line, i) => {
+                        if (line.startsWith('**') && line.endsWith('**')) {
+                          return <h4 key={i} className="serif text-xl text-[#d4af37] mt-6 mb-2">{line.replace(/\*\*/g, '')}</h4>;
+                        }
+                        return line.trim() ? <p key={i} className="leading-relaxed">{line}</p> : null;
+                      })}
+                    </div>
                 
                 {isInterpreting ? (
                    <div className="flex flex-col items-center py-10">
