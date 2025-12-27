@@ -9,6 +9,10 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-3-flash-preview",  // ← Только эта модель!
+});
+
 export const getTarotInterpretation = async (question: string, cards: TarotCard[]): Promise<string> => {
   let prompt = '';
   
