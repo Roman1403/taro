@@ -10,7 +10,30 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export const getTarotInterpretation = async (question: string, cards: TarotCard[]): Promise<string> => {
-  const prompt = `
+  let prompt = '';
+  
+  // Разные промпты в зависимости от количества карт
+  if (cards.length === 1) {
+    // Одна карта - быстрый ответ
+    prompt = `
+Ты - мудрый таролог. Дай краткое толкование карты Таро для вопроса пользователя.
+
+Вопрос: "${question}"
+
+Карта: ${cards[0].name} (${cards[0].meaning})
+
+Дай ответ в формате:
+
+**${cards[0].name}**
+[3-4 предложения: что означает эта карта в контексте вопроса, какой совет она дает]
+
+Тон: спокойный, мудрый.
+Язык: русский.
+Объем: максимум 80 слов.
+`;
+  } else if (cards.length === 3) {
+    // Три карты - прошлое/настоящее/будущее
+    prompt = `
 Ты - мудрый таролог. Дай толкование трех карт Таро для конкретного вопроса пользователя.
 
 Вопрос: "${question}"
@@ -40,37 +63,51 @@ export const getTarotInterpretation = async (question: string, cards: TarotCard[
 
 Начинай ответ сразу с первой карты.
 `;
-
-  try {
-    // Используем самую новую модель Gemini 3 Flash Preview
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-3-flash-preview",
-    });
-
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
+  } else if (cards.length === 10) {
+    // Кельтский крест - подробный расклад
+    const positions = [
+      'ТЕКУЩАЯ СИТУАЦИЯ (сердце вопроса)',
+      'ПРЕПЯТСТВИЕ/ВЛИЯНИЕ (что пересекает)',
+      'ОСНОВА (корни ситуации)',
+      'НЕДАВНЕЕ ПРОШЛОЕ (что уходит)',
+      'ВОЗМОЖНОЕ БУДУЩЕЕ (куда идет)',
+      'БЛИЖАЙШЕЕ БУДУЩЕЕ (что приходит)',
+      'ВАШЕ ОТНОШЕНИЕ (как вы видите ситуацию)',
+      'ВНЕШНИЕ ВЛИЯНИЯ (мнение окружающих)',
+      'НАДЕЖДЫ И СТРАХИ (ваши эмоции)',
+      'ИТОГОВЫЙ РЕЗУЛЬТАТ (финальный исход)'
+    ];
     
-    if (!text) {
-      throw new Error("Пустой ответ от API");
-    }
-
-    return text;
-  } catch (error) {
-    console.error("Gemini 3 Flash error:", error);
+    const cardsDescription = cards.map((card, idx) => 
+      `${idx + 1}. ${card.name} (${card.meaning}) - ${positions[idx]}`
+    ).join('\n');
     
-    // Fallback на Gemini 2.0 Flash если 3.0 недоступен
-    try {
-      const fallbackModel = genAI.getGenerativeModel({ 
-        model: "gemini-2.0-flash-exp",
-      });
-      
-      const result = await fallbackModel.generateContent(prompt);
-      const response = result.response;
-      return response.text() || "Оракул хранит молчание.";
-    } catch (fallbackError) {
-      console.error("Fallback error:", fallbackError);
-      return "Необходима тишь такой рефлексии. Звёзды скрыты, но карты остаются символами вашего пути.";
-    }
-  }
-};
+    prompt = `
+Ты - мудрый таролог. Дай подробное толкование расклада "Кельтский крест" из 10 карт.
+
+Вопрос: "${question}"
+
+Карты в раскладе:
+${cardsDescription}
+
+ВАЖНО! Структура ответа - каждая карта отдельно:
+
+**${cards[0].name}** - Текущая ситуация
+[2 предложения о центре вопроса]
+
+**${cards[1].name}** - Препятствие
+[2 предложения о том, что мешает или влияет]
+
+**${cards[2].name}** - Основа
+[2 предложения о корнях ситуации]
+
+**${cards[3].name}** - Недавнее прошлое
+[2 предложения о том, что уходит]
+
+**${cards[4].name}** - Возможное будущее
+[2 предложения о потенциале]
+
+**${cards[5].name}** - Ближайшее будущее
+[2 предложения о том, что приближается]
+
+**${cards[6].name}** - Ва
