@@ -43,7 +43,11 @@ export const getTarotInterpretation = async (question: string, cards: TarotCard[
 
   try {
     const model = genAI.getGenerativeModel({ 
-     model: "gemini-pro",
+    model: 'gemini-3-flash-preview',
+      contents: prompt,
+      config: {
+        temperature: 0.7,
+        topP: 0.9,
     });
 
     if (!model) {
