@@ -43,26 +43,10 @@ export const getTarotInterpretation = async (question: string, cards: TarotCard[
 
   try {
     const model = genAI.getGenerativeModel({ 
-    model: 'gemini-3-flash-preview',
-      contents: prompt,
-      config: {
-        temperature: 0.7,
-        topP: 0.9,
+      model: "gemini-1.5-pro-latest",
     });
 
-    if (!model) {
-      throw new Error("Не удалось инициализировать модель Gemini");
-    }
-
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.8,
-        topP: 0.9,
-        maxOutputTokens: 800,
-      },
-    });
-
+    const result = await model.generateContent(prompt);
     const response = result.response;
     const text = response.text();
     
@@ -70,9 +54,22 @@ export const getTarotInterpretation = async (question: string, cards: TarotCard[
       throw new Error("Пустой ответ от API");
     }
 
-    return text || "Оракул хранит молчание в этот момент. Обратитесь к значениям самих карт как к вашему проводнику.";
+    return text;
   } catch (error) {
     console.error("Gemini interpretation error:", error);
-    return "Необходима тишь такой рефлексии. Звёзды скрыты, но карты остаются символами вашего пути.";
+    
+    // Запасной вариант с другой моделью
+    try {
+      const fallbackModel = genAI.getGenerativeModel({ 
+        model: "gemini-1.5-flash-latest",
+      });
+      
+      const result = await fallbackModel.generateContent(prompt);
+      const response = result.response;
+      return response.text() || "Оракул хранит молчание.";
+    } catch (fallbackError) {
+      console.error("Fallback error:", fallbackError);
+      return "Необходима тишь такой рефлексии. Звёзды скрыты, но карты остаются символами вашего пути.";
+    }
   }
 };
