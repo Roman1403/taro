@@ -72,24 +72,61 @@ const copyInterpretation = async () => {
       </header>
 
       <main className="w-full flex-grow flex flex-col items-center">
-        {step === 'input' && (
-          <div className="w-full flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            <h2 className="serif text-2xl mb-8 font-light italic">Что ищет ваша душа?</h2>
-            <textarea
-              className="w-full bg-transparent border border-[#d4af37]/30 rounded-lg p-4 text-[#d4af37] placeholder-[#d4af37]/20 focus:outline-none focus:border-[#d4af37] transition-all duration-300 min-h-[120px] mb-8 text-center serif text-xl"
-              placeholder="Задайте вопрос своему сердцу..."
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-            <button
-              onClick={handleStartReading}
-              disabled={!question.trim()}
-              className="px-10 py-3 border border-[#d4af37] rounded-full uppercase tracking-[0.2em] text-sm hover:bg-[#d4af37] hover:text-black transition-all duration-500 disabled:opacity-30 disabled:pointer-events-none"
-            >
-              Спросить Оракула
-            </button>
-          </div>
-        )}
+       {step === 'input' && (
+  <div className="w-full flex flex-col items-center text-center animate-in fade-in duration-1000">
+    <h2 className="serif text-2xl mb-8 font-light italic">Что ищет ваша душа?</h2>
+    
+    {/* Выбор расклада */}
+    <div className="flex gap-3 mb-6">
+      <button
+        onClick={() => setSpreadType('one')}
+        className={`px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-all ${
+          spreadType === 'one' 
+            ? 'bg-[#d4af37] text-black' 
+            : 'border border-[#d4af37]/30 text-[#d4af37]/60 hover:border-[#d4af37]'
+        }`}
+      >
+        1 карта
+      </button>
+      <button
+        onClick={() => setSpreadType('three')}
+        className={`px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-all ${
+          spreadType === 'three' 
+            ? 'bg-[#d4af37] text-black' 
+            : 'border border-[#d4af37]/30 text-[#d4af37]/60 hover:border-[#d4af37]'
+        }`}
+      >
+        3 карты
+      </button>
+      <button
+        onClick={() => setSpreadType('celtic')}
+        className={`px-4 py-2 rounded-full text-xs uppercase tracking-wider transition-all ${
+          spreadType === 'celtic' 
+            ? 'bg-[#d4af37] text-black' 
+            : 'border border-[#d4af37]/30 text-[#d4af37]/60 hover:border-[#d4af37]'
+        }`}
+      >
+        Кельтский крест
+      </button>
+    </div>
+    
+    <textarea
+      className="w-full bg-transparent border border-[#d4af37]/30 rounded-lg p-4 text-[#d4af37] placeholder-[#d4af37]/20 focus:outline-none focus:border-[#d4af37] transition-all duration-300 min-h-[120px] mb-8 text-center serif text-xl"
+      placeholder="Задайте вопрос своему сердцу..."
+      value={question}
+      onChange={(e) => setQuestion(e.target.value)}
+    />
+    
+    <button
+      onClick={handleStartReading}
+      disabled={!question.trim()}
+      className="px-10 py-3 border border-[#d4af37] rounded-full uppercase tracking-[0.2em] text-sm hover:bg-[#d4af37] hover:text-black transition-all duration-500 disabled:opacity-30 disabled:pointer-events-none"
+    >
+      Спросить Оракула
+    </button>
+  </div>
+)}
+
 
       {step === 'drawing' && (
   <div className="flex flex-col items-center justify-center py-20">
