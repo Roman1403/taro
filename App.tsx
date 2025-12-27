@@ -26,16 +26,22 @@ const [spreadType, setSpreadType] = useState<SpreadType>('three');
   };
 
   const drawCards = useCallback(() => {
-    setIsRevealing(true);
-    const shuffled = [...TAROT_CARDS].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 3);
-    setReading({ question, cards: selected });
-    setStep('reading');
-    
-    setTimeout(() => {
-      fetchInterpretation(selected);
-    }, 2500);
-  }, [question]);
+  playSound('draw');
+  setIsRevealing(true);
+  const shuffled = [...TAROT_CARDS].sort(() => 0.5 - Math.random());
+  
+  const cardCount = spreadType === 'one' ? 1 : spreadType === 'three' ? 3 : 10;
+  const selected = shuffled.slice(0, cardCount);
+  
+  setReading({ question, cards: selected });
+  setStep('reading');
+  
+  setTimeout(() => {
+    playSound('reveal');
+    fetchInterpretation(selected);
+  }, 2500);
+}, [question, spreadType]);
+
 
   const fetchInterpretation = async (cards: TarotCard[]) => {
     setIsInterpreting(true);
