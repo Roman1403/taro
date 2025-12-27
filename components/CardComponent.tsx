@@ -5,15 +5,17 @@ const DonationButton: React.FC = () => {
   const [copiedCard, setCopiedCard] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
   
-  // ========== ВСТАВЬТЕ ВАШИ ДАННЫЕ ЗДЕСЬ ==========
-  const cardNumber = "2204310154512233"; // Замените на номер вашей карты
-  const cardHolder = "Sharov Roman"; // Замените на держателя карты
-  const sbpPhone = "+79222946669"; // Замените на ваш номер телефона для СБП
-  // =================================================
+  // ========== ВАШИ ДАННЫЕ ==========
+  const cardNumber = "2204 3101 5451 2233"; // С пробелами для удобства
+  const cardNumberRaw = "2204310154512233"; // Без пробелов для копирования
+  const cardHolder = "Sharov Roman";
+  const sbpPhone = "+7 922 294 66 69"; // С пробелами для удобства
+  const sbpPhoneRaw = "+79222946669"; // Без пробелов для копирования
+  // =================================
 
   const copyCard = async () => {
     try {
-      await navigator.clipboard.writeText(cardNumber.replace(/\s/g, ''));
+      await navigator.clipboard.writeText(cardNumberRaw);
       setCopiedCard(true);
       setTimeout(() => setCopiedCard(false), 2000);
     } catch (err) {
@@ -23,7 +25,7 @@ const DonationButton: React.FC = () => {
 
   const copyPhone = async () => {
     try {
-      await navigator.clipboard.writeText(sbpPhone.replace(/[\s\-\(\)]/g, ''));
+      await navigator.clipboard.writeText(sbpPhoneRaw);
       setCopiedPhone(true);
       setTimeout(() => setCopiedPhone(false), 2000);
     } catch (err) {
@@ -73,9 +75,9 @@ const DonationButton: React.FC = () => {
               </p>
               <button
                 onClick={copyPhone}
-                className="w-full py-2 border border-[#d4af37] rounded-full text-[#d4af37] text-xs uppercase tracking-wider hover:bg-[#d4af37] hover:text-black transition-all duration-300"
+                className="w-full py-2.5 bg-[#d4af37] text-black rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-[#c49d2f] transition-all duration-300 shadow-lg"
               >
-                {copiedPhone ? '✓ Скопировано' : '📋 Копировать телефон'}
+                {copiedPhone ? '✓ Телефон скопирован!' : '📱 Копировать телефон для СБП'}
               </button>
             </div>
 
@@ -102,9 +104,9 @@ const DonationButton: React.FC = () => {
               </p>
               <button
                 onClick={copyCard}
-                className="w-full py-2 border border-[#d4af37]/50 rounded-full text-[#d4af37] text-xs uppercase tracking-wider hover:border-[#d4af37] hover:bg-[#d4af37]/10 transition-all duration-300"
+                className="w-full py-2.5 border-2 border-[#d4af37] rounded-full text-[#d4af37] text-xs uppercase tracking-wider font-semibold hover:bg-[#d4af37] hover:text-black transition-all duration-300"
               >
-                {copiedCard ? '✓ Скопировано' : '📋 Копировать номер'}
+                {copiedCard ? '✓ Номер карты скопирован!' : '💳 Копировать номер карты'}
               </button>
             </div>
 
