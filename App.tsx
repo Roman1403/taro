@@ -126,40 +126,37 @@ const App: React.FC = () => {
               ))}
             </div>
 
-            {/* Interpretation Section */}
-           <div className="text-[#d4af37]/90 leading-relaxed text-base max-w-2xl mx-auto text-left space-y-4">
-                      {reading.interpretation.split('\n').map((line, i) => {
-                        if (line.startsWith('**') && line.endsWith('**')) {
-                          return <h4 key={i} className="serif text-xl text-[#d4af37] mt-6 mb-2">{line.replace(/\*\*/g, '')}</h4>;
-                        }
-                        return line.trim() ? <p key={i} className="leading-relaxed">{line}</p> : null;
-                      })}
-                    </div>
-                
-                {isInterpreting ? (
-                   <div className="flex flex-col items-center py-10">
-                      <div className="w-8 h-8 border-t border-r border-[#d4af37] rounded-full animate-spin mb-4"></div>
-                      <p className="serif italic text-lg opacity-60">Оракул размышляет...</p>
-                   </div>
-                ) : (
-                  <div className="space-y-6">
-                    <h3 className="serif text-3xl italic mb-6">Толкование</h3>
-                    <div className="text-[#d4af37]/90 leading-relaxed serif text-xl max-w-md mx-auto whitespace-pre-wrap">
-                      {reading.interpretation}
-                    </div>
-                    
-                    <div className="pt-10">
-                      <DonationButton />
-                    </div>
+           {/* Interpretation Section */}
+{isInterpreting ? (
+  <div className="flex flex-col items-center py-10">
+    <div className="w-8 h-8 border-t border-r border-[#d4af37] rounded-full animate-spin mb-4"></div>
+    <p className="serif italic text-lg opacity-60">Оракул размышляет...</p>
+  </div>
+) : (
+  <div className="space-y-6">
+    <h3 className="serif text-3xl italic mb-6">Толкование</h3>
+    <div className="text-[#d4af37]/90 leading-relaxed text-base max-w-2xl mx-auto text-left space-y-4">
+      {reading.interpretation.split('\n').map((line, i) => {
+        if (line.startsWith('**') && line.endsWith('**')) {
+          return <h4 key={i} className="serif text-xl text-[#d4af37] mt-6 mb-2">{line.replace(/\*\*/g, '')}</h4>;
+        }
+        return line.trim() ? <p key={i} className="leading-relaxed">{line}</p> : null;
+      })}
+    </div>
+    
+    <div className="pt-10">
+      <DonationButton />
+    </div>
 
-                    <button 
-                      onClick={reset}
-                      className="text-[10px] uppercase tracking-[0.4em] opacity-30 hover:opacity-100 transition-opacity pb-10"
-                    >
-                      Новая консультация
-                    </button>
-                  </div>
-                )}
+    <button 
+      onClick={reset}
+      className="text-[10px] uppercase tracking-[0.4em] opacity-30 hover:opacity-100 transition-opacity pb-10"
+    >
+      Новая консультация
+    </button>
+  </div>
+)}
+
               </div>
             )}
           </div>
