@@ -10,6 +10,7 @@ const App: React.FC = () => {
   const [reading, setReading] = useState<Reading | null>(null);
   const [isRevealing, setIsRevealing] = useState(false);
   const [isInterpreting, setIsInterpreting] = useState(false);
+const [spreadType, setSpreadType] = useState<SpreadType>('three');
 
   useEffect(() => {
     const savedQuestion = sessionStorage.getItem('oracle_last_question');
