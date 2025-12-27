@@ -9,7 +9,7 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({
-model: "gemini-3-flash-preview",  // ← Только эта модель!
+model: "gemini-3-flash",  // ← Только эта модель!
 // Настройки генерации
 const generationConfig = {
   temperature: 0.8,
@@ -135,7 +135,7 @@ ${cardsText}
 
   try {
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-3-flash-preview",
+      model: "gemini-3-flash",
       generationConfig, // ← Добавили настройки генерации
     });
 
