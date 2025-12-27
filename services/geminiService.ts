@@ -1,5 +1,5 @@
 
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { TarotCard } from "../types";
 
 const ai = new GoogleGenerativeAI({ apikey: "AIzaSyAAO3XmnSm2zRr0h4lXx_Q5dnxYrc3vHx4" });
